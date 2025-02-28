@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成發初選 網站</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <style>
+        /* 添加一些基本的樣式來處理彈出視窗 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px; /* 確保大小固定 */
+            text-align: center; /* 置中 */
+            position: relative; /* 確保 .close 置於右上 */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .carousel-button {
+            opacity: 0.0;
+            transition: opacity 0.1s;
+        }
+        .carousel-button:hover {
+            opacity: 1;
+        }
+        .carousel-slide {
+            border: 1px solid #888; /* 添加方框框住它 */
+            padding: 10px;
+            margin: 10px;
+        }
+        .carousel-dots {
+            text-align: center;
+            position: absolute;
+            bottom: 50px; /* 置於中下但在 .modal-link-button 上方 */
+            width: 100%;
+        }
+        .modal-link-button {
+            display: block;
+            margin: 20px auto 0; /* 置中 */
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .modal-link-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>成發初選點評</h1>
+    </header>
+    <div class="container">
+        <!-- 16 個按鈕 -->
+        <button class="nav-button" data-url="https://example.com/1">誰先喂？銅氨纖維！</button>
+        <button class="nav-button" data-url="https://example.com/2">強風吹拂</button>
+        <button class="nav-button" data-url="https://example.com/3">你說的黑不是黑，你說的白是什麼白</button>
+        <button class="nav-button" data-url="https://example.com/4">香蕉水肥</button>
+        <button class="nav-button" data-url="https://example.com/5">風生水起</button>
+        <button class="nav-button" data-url="https://example.com/6">3D遊戲製作</button>
+        <button class="nav-button" data-url="https://example.com/7">白板清潔的研究</button>
+        <button class="nav-button" data-url="https://example.com/8">「金」「豌」，我想來點</button>
+        <button class="nav-button" data-url="https://example.com/9">外掛英豪</button>
+        <button class="nav-button" data-url="https://example.com/10">茗茶秋毫</button>
+        <button class="nav-button" data-url="https://example.com/11">花青大蘿蔔</button>
+        <button class="nav-button" data-url="https://example.com/12">米斯卡 莫斯卡 巴斯卡</button>
+        <button class="nav-button" data-url="https://example.com/13">用球的奧秘</button>
+        <button class="nav-button" data-url="https://example.com/14">格致官網2.0</button>
+        <button class="nav-button" data-url="https://example.com/15">二維正交空間簡諧運動圖形之探討</button>
+        <button class="nav-button" data-url="https://example.com/16">齒輪比對風力發電電量的影響</button>
+    </div>
+    <!-- 16 個模態框 -->
+    <div id="myModal1" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal2" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal3" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal4" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal5" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal6" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal7" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal8" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal9" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal10" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal11" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal12" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal13" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal14" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal15" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+    <div id="myModal16" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-text"></p>
+            <p class="modal-subtitle"></p>
+            <div class="carousel">
+                <button class="carousel-button prev">&lt;</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                    <div class="carousel-slide"></div>
+                </div>
+                <button class="carousel-button next">&gt;</button>
+                <div class="carousel-dots">
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+            <a href="https://chatgpt.com/share/67c1ae71-8bc0-800c-878c-3c72ae3bd358" class="modal-link-button">進一步詢問ChatGPT如何改進</a>
+        </div>
+    </div>
+</body>
+</html>
